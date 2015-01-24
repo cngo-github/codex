@@ -1,4 +1,4 @@
-codex
+Codex
 =====
 
-Stores papers I find interesting and wish to save.
+A general purpose storage repository for things I want to keep.
