@@ -1,0 +1,103 @@
+#!/bin/sh
+
+# Command: ddwrite
+#
+# Function: Use dd to write the source file to the target
+#	        file or device.
+
+VERSION=1.0
+
+showhelp () {
+	echo Usage: ddwrite [OPTION...] [SOURCE] [TARGET]
+	echo
+	echo Description: Writes the SOURCE to the TARGET.
+	echo
+	echo Options:
+	echo '  -m              Monitor the progress of the write.'
+	echo '                  Requires PV to be installed.'
+	echo '  -s [SIZE]       Specifies the size of SOURCE, used'
+	echo '                  for time estimations when monitoring.'
+	echo '  -v, --version   Shows the version of the script.'
+	echo '  --help          Shows this help text.'
+	echo
+	echo Return codes:
+	echo '  0   No errors.'
+	echo '  1   Error encountered.'
+
+	return 0
+}
+
+showversion () {
+	echo ddwrite, version $VERSION
+
+	return 0
+}
+
+OPTCNT=0
+MONITOR=0
+SIZE=''
+
+# Parse option flags
+while getopts 'mvs:' OPT; do
+	# Case statement in case additional options
+	# are desired at a later point.
+	case $OPT in
+		m)
+			# Monitor the write.
+			MONITOR=1
+			OPTCNT=$((OPTCNT + 1))
+			;;
+		s)
+			# Get the size of the file
+			SIZE='--size '$OPTARG
+			OPTCNT=$((OPTCNT + 2))
+			;;
+		v)
+			# Show the version.
+			showversion
+			exit 0
+			;;
+		h)
+			# Print help
+			showhelp
+			exit 0
+			;;
+		?)
+			# No option found.  Do nothing.
+			# This is to deal with '--'.
+			;;
+		*)
+			# Unknown option.
+			echo Unknown option provided.
+			showhelpSO
+			exit 1SO
+	esac
+done
+
+if [ $# -gt 0 ] && [ $OPTCNT -le $# ]; then
+	shift $((OPTCNT))
+fi
+
+echo $1
+echo $2
+
+if [ -e $1 ] && [ 'x$2' != 'x' ]; then
+	case $OPT in
+		*)
+			# Get the source and targets.
+			SOURCE=$1
+			TARGET=$2
+	esac
+fi
+
+if [ 'x$SOURCE' != 'x' ] && [ 'x$TARGET' ]; then
+	if [ $MONITOR -eq 1 ]; then
+		dd bs=4M if=$SOURCE | pv $SIZE | dd of=$TARGET
+	else
+		dd bs=4M if=$SOURCE of=$TARGET
+	fi
+else
+	echo Required arguments missing.
+	showhelp
+	exit 1
+fi
