@@ -78,9 +78,6 @@ if [ $# -gt 0 ] && [ $OPTCNT -le $# ]; then
 	shift $((OPTCNT))
 fi
 
-echo $1
-echo $2
-
 if [ -e $1 ] && [ 'x$2' != 'x' ]; then
 	case $OPT in
 		*)
@@ -90,11 +87,15 @@ if [ -e $1 ] && [ 'x$2' != 'x' ]; then
 	esac
 fi
 
-if [ 'x$SOURCE' != 'x' ] && [ 'x$TARGET' ]; then
-	if [ $MONITOR -eq 1 ]; then
+if [ 'x$SOURCE' != 'x' ] && [ 'x$TARGET' != 'x' ]; then
+	if [ $MONITOR -eq 1 ] && [ 'x$SIZE' != 'x' ] ; then
 		dd bs=4M if=$SOURCE | pv $SIZE | dd of=$TARGET
 	else
-		dd bs=4M if=$SOURCE of=$TARGET
+		if [ $MONITOR -eq 1 ]; then
+			dd bs=4M if=$SOURCE | pv | dd of=$TARGET
+		else
+			dd bs=4M if=$SOURCE of=$TARGET
+		fi
 	fi
 else
 	echo Required arguments missing.
