@@ -2,7 +2,13 @@
 
 \usepackage{color}
 \usepackage{mathtools}
-\usepackage[margin=1in]{geometry}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{color}
+\usepackage[margin=1.5cm]{geometry}
 
 \pagestyle{empty}
 \title{Big O Cheat Sheet}
@@ -12,5 +18,30 @@
 
 \maketitle
 \thispagestyle{empty}
+
+\section{Searching}
+\begin{adjustbox}{max width=\textwidth,max totalheight=\textheight,keepaspectratio}
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+Algorithm & Data Structure & \multicolumn{2}{ c |}{Time Complexity} & Space Complexity \\
+\hline
+& & Average & Worst & Worst \\
+\hline
+\href{http://en.wikipedia.org/wiki/Depth-first_search}{Depth First Search (DFS)} & Graphs of |V| vertices and |E| edges. & - & \colorbox{green}{O(|V| + |E|)} & \colorbox{green}{O(|V|)} \\
+\hline
+\href{http://en.wikipedia.org/wiki/Breadth-first_search}{Breadth First Search (BFS)} & Graphs of |V| vertices and |E| edges. & - & \colorbox{green}{O(|V| + |E|)} & \colorbox{green}{O(|V|)} \\
+\hline
+\href{http://en.wikipedia.org/wiki/Binary_search_algorithm}{Binary Search} & Sorted array of \begin{math}n\end{math} elements. & \colorbox{green}{\begin{math}O(\log n)\end{math}} & \colorbox{green}{\begin{math}O(\log n)\end{math}} & \colorbox{green}{\begin{math}O(1)\end{math}} \\
+\hline
+\href{http://en.wikipedia.org/wiki/Brute-force_search}{Linear (Brute Force Search)} & Array of \begin{math}n\end{math} elements. & \colorbox{red}{\begin{math}\color{white}{O(n)}\end{math}} & \colorbox{red}{\begin{math}\color{white}{O(n)}\end{math}} & \colorbox{green}{\begin{math}O(1)\end{math}} \\
+\hline
+\parbox{6cm}{\centering \href{http://en.wikipedia.org/wiki/Dijkstra\%27s_algorithm}{Shortest Path by Dijkstra, using a Min-heap as priority queue}} & Graphs of |V| vertices and |E| edges. & \colorbox{yellow}{\begin{math}O((|V| + |E|) \log |V|)\end{math}} & \colorbox{yellow}{\begin{math}O((|V| + |E|) \log |V|\end{math}} & \colorbox{yellow}{\begin{math}O(|V|)\end{math}} \\
+\hline
+\parbox{6cm}{\centering \href{http://en.wikipedia.org/wiki/Dijkstra\%27s_algorithm}{Shortest Path by Dijkstra, using an unsorted array as priority queue}} & Graphs of |V| vertices and |E| edges. & \colorbox{yellow}{\begin{math}O(|V|^2)\end{math}} & \colorbox{yellow}{\begin{math}O(|V|^2)\end{math}} & \colorbox{yellow}{\begin{math}O(|V|)\end{math}} \\
+\hline
+\href{http://en.wikipedia.org/wiki/Bellman\%E2\%80\%93Ford_algorithm}{Shortest Path with Bellman Ford} & Graphs of |V| vertices and |E| edges. & \colorbox{yellow}{\begin{math}O(|V||E|)\end{math}} & \colorbox{yellow}{\begin{math}O(|V||E|)\end{math}} & \colorbox{yellow}{\begin{math}O(|V|)\end{math}} \\
+\hline
+\end{tabular}
+\end{adjustbox}
 
 \end{document}
